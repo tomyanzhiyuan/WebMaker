@@ -1,6 +1,7 @@
 // WebsiteGenerator.jsx
 import React, { useState, useEffect } from 'react';
 import { Upload, Save, ExternalLink, List } from 'lucide-react';
+import VoiceInteraction from './VoiceChat/VoiceInteraction';
 
 const WebsiteGenerator = () => {
  const [description, setDescription] = useState('');
@@ -197,9 +198,22 @@ const WebsiteGenerator = () => {
        
        <form onSubmit={handleSubmit} className="space-y-6">
          <div>
-           <label className="block text-sm font-medium text-gray-700 mb-2">
-             Describe your website&apos;s vibe
-           </label>
+           <div className="flex justify-between items-center mb-2">
+             <label className="block text-sm font-medium text-gray-700">
+               Describe your website&apos;s vibe
+             </label>
+             <VoiceInteraction 
+               onTranscription={(text) => {
+                 console.log('Transcription callback received:', text);
+                 setDescription(prev => {
+                   console.log('Previous description:', prev);
+                   const newDescription = prev + ' ' + text;
+                   console.log('New description:', newDescription);
+                   return newDescription;
+                 });
+               }} 
+             />
+           </div>
            <textarea
              value={description}
              onChange={(e) => setDescription(e.target.value)}
